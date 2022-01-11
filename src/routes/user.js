@@ -1,84 +1,54 @@
 import { Router } from 'express'
+import { User } from 'src/models/user'
+import validEmail from '../utils'
 const router = Router()
 
-const users = [
-  {
-    id: 1,
-    name: 'John',
-    email: 'hola@gmail.com'
-  },
-  {
-    id: 2,
-    name: 'pepe',
-    email: 'pepe@gmail.com'
-  },
-  {
-    id: 3,
-    name: 'Rick',
-    email: 'rick@gmail.com'
-  }
-]
-
 // create a user
-router.post('/users/register', (req, res) => {
-  const { name, email, password } = req.body
+router.post('/users/register', async (req, res, next) => {
+  const { name, email, perfilURL } = req.body
 
-  if (users.find((user) => user.email === email)) { return res.status(201).json({ message: 'User already exists' }) }
-
-  const user = {
-    id: users.length + 1,
-    name,
-    email,
-    password
+  const isValidEmail = validEmail(email)
+  if (!name || !email || !perfilURL || !isValidEmail) {
+    return res.status(400).json({ error: 'Missing fields' })
   }
 
-  users.push(user) // User.create({user})
-  res.status(200).json(user)
-})
-
-// login a user
-router.post('/users/login', (req, res) => {
-  const { email, password } = req.body
-
-  const logUser = users.find((user) => user.email === email && user.password === password)
-
-  if (!logUser) return res.status(201).json({ message: 'User not found' })
-
-  res.status(200).json(logUser)
-})
-
-// delete a user
-router.delete('/users/:userId', (req, res) => {
-  const { userId } = req.params
-
-  users.filter((user) => user.id !== Number(userId)) // User.deleteOne({id})
-})
-
-// update a user
-router.put('/users/:userId', (req, res) => {
-  const { userId } = req.params                     
-  const { name, password, email } = req.body
-
-  const userNewArry = users.filter((user) => user.id !== Number(userId))
-  res.json([...userNewArry, { userId, name, password, email }])
-  // User.UpdateOne({ id: userId }, { name, password, email }) // mongoDB
+  try {
+    const userExist = await User.findOne({ email })
+    if (userExist) return res.status(401).json({ error: 'User already exists', userExist })
+    const user = new User({ name, email, perfilURL })
+    user.save() // save user in DB
+    res.status(200).json(user)
+  } catch (error) {
+    next(error)
+  }
 })
 
 // get all user
-router.get('/users', (req, res) => {
-  if (!users.length) return res.status(500).json({ message: 'There is no users' })
-  res.status(200).json(users)
+router.get('/users', async (req, res) => {
+  const allUsers = await User.find({})
+  if (allUsers.length === 0) return res.status(404).json({ message: 'User not found' })
+
+  res.status(200).json(allUsers)
 })
 
 // get a user by id
-router.get('/users/:userId', (req, res) => {
-  const { userId } = req.params
+router.get('/users/:email', async (req, res, next) => {
+  const { email } = req.params
+  const isValidEmail = validEmail(email)
 
-  const user = users.find((user) => user.id === Number(userId))
+  if (!email || !isValidEmail) {
+    return res.status(400).json({ error: 'Missing fields' })
+  }
 
-  if (!user) return res.status(404).json({ message: 'User not found' })
+  try {
+    const user = await User.findOne({ email })
 
-  res.status(200).json(user)
+    if (!user) res.status(404).json({ message: 'User not found' })
+
+    res.status(200).json(user)
+  } catch (error) {
+    next(error)
+  }
 })
 
 export default router
