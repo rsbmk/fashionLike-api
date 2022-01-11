@@ -1,0 +1,47 @@
+
+//CREATE USER
+
+POST http://localhost:3000/api/users/register
+content-type: application/json
+{
+  "name": "holahola",
+  "email": "hola@gmail.com",
+  "password": "123456"
+}
+
+
+// LOGIN USERS
+###
+POST  http://localhost:3000/api/users/login
+
+{
+  "email": "fran@gmail.com",
+  "password": "123"
+}
+
+
+// DELETE USER BY ID
+###
+DELETE  http://localhost:3000/api/users/4
+
+
+// UPDATE USER BY ID
+###
+PUT http://localhost:3000/api/users/:userId
+{
+  "userId":"1",
+   "name": "xxxxxxx",
+   "password": "123456",
+  "email": "xxxxxx@gmail.com"
+}
+
+// GET ALL USERS
+###
+GET  http://localhost:3000/api/users
+content-type: application/json
+
+
+
+// GET USER BY ID
+###
+GET http://localhost:3000/api/users/1
