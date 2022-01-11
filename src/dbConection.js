@@ -8,4 +8,5 @@ connect(strinConnection)
   .catch(err => {
     console.log(err)
     connection.close()
+    throw err
   })
