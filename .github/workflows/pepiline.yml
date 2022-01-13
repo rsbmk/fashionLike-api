@@ -9,15 +9,15 @@ on:
 jobs: 
   deploy:
     runs-on: ubuntu-latest
-    environment: dev
+    env:
+      NODE_ENV: test
     steps:
+      - run: echo "Deploying... ${{ env.NODE_ENV }}"
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
       - run: echo "variable ${{ dev.NODE_ENV }}" 
         with:
           node-version: 17
-          MONGO_DB_URI_TEST: ${{ dev.MONGO_DB_URI_TEST }}
-          NODE_ENV: test
       - name: Install dependencies
         run: npm ci
       - name: Lint
