@@ -5,21 +5,24 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    types: [ opened, reopened, synchronize ]
 
 jobs: 
   deploy:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      MONGO_DB_URI_TEST: mongodb+srv://rsbmk:1426@bmk.rrxmr.mongodb.net/fashionLikeTest?retryWrites=true&w=majority
     steps:
       - run: echo "Deploying... $NODE_ENV" 
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 17
-          NODE_ENV: ${{secrets.NODE_ENV}}
-          MONGO_DB_URI_TEST: ${{secrets.MONGO_DB_URI_TEST}}
       - name: Install dependencies
         run: npm ci
       - name: Lint
         run: npm run lint
       - name: Test
-        run: npm test
+        if: ${{env.NODE_ENV == "test"}}
+        run: npm run test
