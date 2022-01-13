@@ -10,10 +10,7 @@ on:
 jobs: 
   deploy:
     runs-on: ubuntu-latest
-    env:
-      MONGO_DB_URI_TEST: mongodb+srv://rsbmk:1426@bmk.rrxmr.mongodb.net/fashionLikeTest?retryWrites=true&w=majority
     steps:
-      - run: echo "Deploying... $NODE_ENV" 
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
