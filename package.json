@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "standard",
+    "lint": "standard --fix",
     "start": "NODE_ENV=production babel-node index.js",
     "dev": "NODE_ENV=development nodemon index.js --exec babel-node",
     "co": "sui-mono commit",
@@ -39,6 +39,11 @@
     "rules": {
       "import/first": "off"
     }
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
   },
   "jest": {
     "testEnvironment": "node"
