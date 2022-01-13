@@ -13,6 +13,10 @@ jobs:
     env:
       MONGO_DB_URI_TEST: ${{secrets.MONGO_DB_URI_TEST}}
     steps:
+      - name: Cancel previous redundans builds
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{github.token}}
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
@@ -22,5 +26,5 @@ jobs:
       - name: Lint
         run: npm run lint
       - name: Test
-        if: ${{env.NODE_ENV}} == test
+        if: ${{secrets.NODE_ENV}} == test
         run: npm run test
