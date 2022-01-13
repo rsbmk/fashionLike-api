@@ -10,6 +10,8 @@ on:
 jobs: 
   deploy:
     runs-on: ubuntu-latest
+    env:
+      MONGO_DB_URI_TEST: ${{env.MONGO_DB_URI_TEST}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
