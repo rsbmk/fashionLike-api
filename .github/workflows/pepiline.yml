@@ -11,7 +11,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: test
       MONGO_DB_URI_TEST: mongodb+srv://rsbmk:1426@bmk.rrxmr.mongodb.net/fashionLikeTest?retryWrites=true&w=majority
     steps:
       - run: echo "Deploying... $NODE_ENV" 
