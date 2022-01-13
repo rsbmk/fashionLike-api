@@ -13,7 +13,6 @@ jobs:
       - run: echo "Deploying... $NODE_ENV" 
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - run: echo "variable ${{ dev.NODE_ENV }}" 
         with:
           node-version: 17
           NODE_ENV: ${{secrets.NODE_ENV}}
