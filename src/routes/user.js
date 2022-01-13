@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { User } from 'src/models/user'
+import { User } from '../models/user'
 import validEmail from '../utils'
 const router = Router()
 
@@ -15,9 +15,10 @@ router.post('/users/register', async (req, res, next) => {
   try {
     const userExist = await User.findOne({ email })
     if (userExist) return res.status(401).json({ error: 'User already exists', userExist })
-    const user = new User({ name, email, perfilURL })
-    user.save() // save user in DB
-    res.status(200).json(user)
+
+    const user = await new User({ name, email, perfilURL })
+    await user.save() // save user in DB
+    res.status(201).json(user)
   } catch (error) {
     next(error)
   }
@@ -26,7 +27,7 @@ router.post('/users/register', async (req, res, next) => {
 // get all user
 router.get('/users', async (req, res) => {
   const allUsers = await User.find({})
-  if (allUsers.length === 0) return res.status(404).json({ message: 'User not found' })
+  if (!allUsers.length) return res.status(404).json({ message: 'User not found' })
 
   res.status(200).json(allUsers)
 })
