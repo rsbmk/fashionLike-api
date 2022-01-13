@@ -8,27 +8,27 @@
     "start": "NODE_ENV=production babel-node index.js",
     "dev": "NODE_ENV=development nodemon index.js --exec babel-node",
     "co": "sui-mono commit",
-    "test": "NODE_ENV=test jest --verbose --silent",
+    "test": "NODE_ENV=test jest --verbose --silent --detectOpenHandles",
     "test:watch": "npm run test -- --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "10.0.0",
+    "dotenv": "11.0.0",
     "express": "4.17.2",
-    "mongoose": "6.1.5"
+    "mongoose": "6.1.6"
   },
   "devDependencies": {
-    "@babel/cli": "7.16.7",
+    "@babel/cli": "7.16.8",
     "@babel/core": "7.16.7",
-    "@babel/node": "7.16.7",
-    "@babel/preset-env": "7.16.7",
+    "@babel/node": "7.16.8",
+    "@babel/preset-env": "7.16.8",
     "@s-ui/mono": "2.18.0",
     "jest": "27.4.7",
     "nodemon": "2.0.15",
     "standard": "16.0.4",
-    "supertest": "^6.1.6"
+    "supertest": "^6.2.1"
   },
   "type": "commonjs",
   "eslintConfig": {
